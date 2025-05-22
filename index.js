@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // MySQL Database Configuration
 // ----------------------------------------------
 const dbConfig = {
-  host: "shortline.proxy.rlwy.net",
+  host: "mysql.railway.internal",
   user: "root",
   password: "NxcXNutHCKXNuYtgTEYMlECpmbnZkeQz",
   database: "railway",
-  port: "19618",
+  port: "3306",
 };
 
 let db;
