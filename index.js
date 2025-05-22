@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // MySQL Database Configuration
 // ----------------------------------------------
 const dbConfig = {
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT,
+  host: "shortline.proxy.rlwy.net",
+  user: "root",
+  password: "NxcXNutHCKXNuYtgTEYMlECpmbnZkeQz",
+  database: "railway",
+  port: "19618",
 };
 
 let db;
