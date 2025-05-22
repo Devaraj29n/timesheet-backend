@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // MySQL Database Configuration
 // ----------------------------------------------
 const dbConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'timesheet',
-  port: 3306,
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT,
 };
 
 let db;
