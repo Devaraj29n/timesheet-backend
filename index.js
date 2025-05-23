@@ -10,7 +10,7 @@ const PORT = 3030;
 // CORS Middleware
 // ----------------------------------------------
 const corsOptions = {
-  origin: 'https://new-timesheet.netlify.app/',
+  origin: 'https://new-timesheet.netlify.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
