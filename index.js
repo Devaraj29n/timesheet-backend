@@ -10,7 +10,7 @@ const PORT = 3030;
 // CORS Middleware
 // ----------------------------------------------
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: 'https://new-timesheet.netlify.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -898,6 +898,54 @@ app.get('/api/spent-time-details', async (req, res) => {
   } catch (err) {
     console.error("Error fetching spent time details:", err);  // << See this in your terminal
     res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+
+app.get('/api/spent-time', async (req, res) => {
+  try {
+    // Get crm_log_id from request header (or from query params)
+    const crmLogId = req.headers['authorization']?.split(' ')[1] || req.query.crm_log_id;
+    const selectedDate = req.query.date; // Get the selected date from the query parameter
+
+    if (!crmLogId) {
+      return res.status(401).json({ error: 'Unauthorized: crm_log_id missing' });
+    }
+
+    if (!selectedDate) {
+      return res.status(400).json({ error: 'Date parameter missing' });
+    }
+
+    // Adjust the SQL query to filter by the selected date
+    const [rows] = await db.execute(`
+      SELECT
+          mst.start_time,
+          mst.end_time,
+          mst.hours,
+          mst.comments,
+          t.task_name,
+          st.subtask_name,
+          p.project_name
+      FROM
+          main_spent_time mst
+      JOIN
+          main_task t ON mst.task_id = t.id
+      JOIN
+          main_sub_task st ON mst.sub_task_id = st.id
+      JOIN
+          main_project p ON mst.project_id = p.id
+      WHERE
+          mst.user_id = ? AND DATE(mst.start_date) = ?
+    `, [crmLogId, selectedDate]); // Use DATE() to match only the date part of start_time
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No data found for this employee on the selected date' });
+    }
+
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching spent time:', err);
+    res.status(500).send('Server Error');
   }
 });
 
